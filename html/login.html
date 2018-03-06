@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Personal information</title>
+<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+<style>
+    .text_input{
+        width:150px;
+        border-radius: 3px;
+    }
+    .submit_input{
+        width:240px;
+    }
+    .register{
+        margin-top:5px;
+        font-size:8px;
+    }
+</style>
+</head>
+<body style="text-align:center">
+<h3>Login In</h3>
+<hr>
+<div id="login_form">
+<div>username：<input class="text_input" type="text" name="username"></div>
+<div>password：<input class="text_input" type="password" name="password"></div>
+<div class="submit">
+    <input type="button" class="submit_input"  value="submit" onclick="login();">
+</div>
+<div class="register">
+    have no account? <a onclick="register();">register</a>
+</div>
+</div>
+<hr>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script>
+    function login(){
+    
+        var arr = {
+            "username":"username",
+            "password":"password"
+        }
+        
+        for(var i in arr){
+            if($("[name="+i+"]").val() == ''){
+                alert(arr[i]+' can not be null');
+                return false;
+            }
+        }
+    
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/login",
+            data:{
+                username: $("[name=username]").val(),
+                password: $("[name=password]").val()
+            },
+            success: function(result){
+                var obj =JSON.parse(result);
+                if(obj.code == 200){
+                    //跳转到首页
+                    //to do
+                }else{
+                    alert(obj.Msg);
+                }
+            }
+        })
+    }
+    function register(){
+        window.open("register.html");
+    }
+</script>
+</body>
+</html>

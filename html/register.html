@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+<style>
+    .text_input{
+        width:150px;
+        border-radius: 3px;
+    }
+    .submit_input{
+        width:240px;
+        margin-bottom:5px;
+    }
+    #register_form ul li span{
+        display:inline-block;
+        width:160px;
+        text-align:right;
+    }
+</style>
+</head>
+<body style="text-align:center">
+<h3>Register</h3>
+<hr>
+<div id="register_form">
+<ul>
+	<li><span>username：</span><input class="text_input" type="text" name="username"></li>
+	<li><span>password：</span><input class="text_input" type="password" name="password"></li>
+    <li><span>confirm password：</span><input class="text_input" type="password" name="confirm_password"></li>
+</ul>
+<div>
+    <input class="submit_input" type="submit" value="confirm" onclick="register();">
+</div>
+</div>
+<hr>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script>
+    function register(){
+        
+        var arr = {
+            "username":"username",
+            "password":"password",
+            "confirm_password":"confirm_password"
+        }
+        
+        for(var i in arr){
+            if($("[name="+i+"]").val() == ''){
+                alert(arr[i]+' can not be null');
+                return false;
+            }
+        }
+        
+        if($("[name=password]").val() != $("[name=confirm_password]").val()){
+            alert('password is different from confirm_password, please check');
+            return false;
+        }
+        
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/register",
+            data:{
+                username: $("[name=username]").val(),
+                password: $("[name=password]").val()
+            },
+            success: function(result){
+                var obj =JSON.parse(result);
+                if(obj.code == 200){
+                    //跳转到首页
+                    //to do
+                }else{
+                    alert(obj.Msg);
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
