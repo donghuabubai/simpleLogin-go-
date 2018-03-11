@@ -37,8 +37,16 @@ func login(w http.ResponseWriter, r *http.Request) { //登陆
 		fmt.Println(err)
 	}
 	defer db.Close()
+
+	var post_data PostData
+	post_data.user_name = username[0]
+	post_data.pass_word = password[0]
+
+	var filter_data FilterData = post_data
+	post_data = filter_data.formatData()
+
 	var row *sql.Row
-	row = db.QueryRow("select * from users where username = ? and password = ?", username[0], password[0])
+	row = db.QueryRow("select * from users where username = ? and password = ?", post_data.user_name, post_data.pass_word)
 	var user_name, pass_word string
 	var id int
 	err = row.Scan(&id, &user_name, &pass_word) //遍历结果
